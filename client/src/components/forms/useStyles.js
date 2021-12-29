@@ -25,8 +25,8 @@ const useStyles = makeStyles(theme => ({
   },
   textField: {
     width: "100%",
-    height: 85,
-    marginBottom: "12px !important",
+    height: 74,
+    marginBottom: "5px !important",
     fontSize: 18,
   },
   textInput: {
@@ -45,6 +45,11 @@ const useStyles = makeStyles(theme => ({
     height: 52,
     width: 144,
   },
+  link: {
+    fontSize: 12,
+    color: "#000000",
+    opacity: 0.55,
+  }
 }));
 
 export default useStyles;

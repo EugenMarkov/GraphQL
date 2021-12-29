@@ -24,28 +24,27 @@ module.exports = {
     },
   },
   Mutation: {
-    createUser: async (_, args) => {
+    signUp: async (_, args) => {
+      const { email, name, password } = args;
       try {
         const { isValid } = validateForm(args);
 
         if (!isValid) {
-          return { message: "data is not valid", status: "fail" };
+          return { error: "Data is not valid" };
         }
 
-        const customer = await User.findOne({ $or: [{ email: args.email }] });
-        if (customer) {
-          if (customer.email === args.email) {
-            return {
-              message: `Email ${args.email} already exists`,
-              status: "fail",
-            };
+        const user = await User.findOne({ $or: [{ email: email }] });
+        if (user) {
+          if (user.email === email) {
+            return { error: `Email ${email} already exists` };
           }
         } else {
-          const password = await bcrypt.hash(args.password, 10);
+          const cryptPassword = await bcrypt.hash(password, 10);
           const newUser = new User({
-            name: args.name,
-            email: args.email,
-            password: password,
+            name,
+            email,
+            password: cryptPassword,
+            role: "USER",
           });
 
           const user = await newUser.save();
@@ -67,10 +66,15 @@ module.exports = {
         if (!isValid) {
           return { error: "Data is not valid" };
         }
+
         const user = await User.findOne({ $or: [{ email: email }] });
 
         if (!user) {
           return { error: "User not found" };
+        }
+
+        if (!user.enabled) {
+          return { error: "User is blocked" };
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -79,10 +83,11 @@ module.exports = {
           const payload = {
             id: user.id,
             name: user.name,
+            role: user.role,
           };
 
           const token = await jwt.sign(payload, keys.secretOrKey, {
-            expiresIn: 36000,
+            expiresIn: 86400,
           });
 
           return {

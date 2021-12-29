@@ -98,10 +98,9 @@ const theme = createTheme(
       MuiFormHelperText: {
         styleOverrides: {
           root: {
-            fontSize: 14,
-            lineHeight: "20px",
-            margin: "7px 0 0 0",
-            position: "relative",
+            fontSize: 12,
+            lineHeight: "14px",
+            margin: "3px 0 0 0",
           },
         },
       },

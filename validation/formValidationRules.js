@@ -8,20 +8,6 @@ const formValidationRules = [
     message: "First Name is required.",
   },
   {
-    field: "name",
-    method: "matches",
-    validWhen: true,
-    args: [/^[a-zA-Zа-яА-Я]+$/],
-    message: "Allowed characters for First Name is a-z, A-Z, а-я, А-Я.",
-  },
-  {
-    field: "name",
-    method: "isLength",
-    validWhen: true,
-    args: [{ min: 2, max: 25 }],
-    message: "First Name must be between 2 and 25 characters",
-  },
-  {
     field: "email",
     method: FormValidator.isEmpty,
     validWhen: false,
@@ -74,10 +60,11 @@ const formValidationRules = [
     message: "Password must be between 7 and 30 characters",
   },
   {
-    field: "isWatching",
-    method: "isBoolean",
+    field: "role",
+    method: "matches",
     validWhen: true,
-    message: "isAdmin field must be true or false",
+    args: [/^[A-Z]+$/],
+    message: "Allowed characters for role A-Z",
   },
   {
     field: "enabled",

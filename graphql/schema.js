@@ -7,6 +7,7 @@ const typeDefs = gql`
     email: String!
     password: String!
     role: String!
+    enabled: Boolean!
   }
 
   type Query {
@@ -21,25 +22,21 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(
-      name: String!
-      email: String!
-      password: String!
-    ): NewUserResponse
-    signIn(email: String!, password: String!): LoginUserResponse
+    signUp(name: String!, email: String!, password: String!): SignUpResponse
+    signIn(email: String!, password: String!): LoginResponse
     addMovie(name: String!, url: String!): MovieResponse
     updateMovie(id: ID!, startPoint: Int!): MovieResponse
     playMovie(id: ID!): MovieResponse
     stopMovie(id: ID!): MovieResponse
   }
 
-  type NewUserResponse {
+  type SignUpResponse {
     user: User
     status: String
-    message: String
+    error: String
   }
 
-  type LoginUserResponse {
+  type LoginResponse {
     user: User
     token: String
     error: String

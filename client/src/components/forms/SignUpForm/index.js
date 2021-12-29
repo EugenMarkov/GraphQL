@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
-
-import { setToken } from "../../../utils/auth";
 
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Box from "@mui/material/Box";
@@ -18,53 +16,52 @@ import ErrorHandler from "../../common/ErrorHandler";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import PersonOutlineOutlineIcon from "@mui/icons-material/PersonOutlineOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import useStyles from "../useStyles";
 
 /**
- * @desc function for create login form
+ * @desc function for create sign up form
  * @returns {JSX.Element}
  */
-const LoginForm = () => {
+const SignUpForm = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [user, setValues] = useState({
     email: "",
+    name: "",
     password: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleChange = event => setValues({ ...user, [event.target.name]: event.target.value });
 
   const handleShowPassword = () => setShowPassword(prev => !prev);
 
-  const USER_LOGIN = gql`
-    mutation signIn($email: String!, $password: String!) {
-      signIn(email: $email, password: $password) {
-        user {
-          email
-          role
-        }
-        token
+  const USER_SIGN_UP = gql`
+    mutation signUp($email: String!, $name: String!, $password: String!) {
+      signUp(email: $email, name: $name, password: $password) {
+        status
         error
       }
     }
   `;
 
-  const [signIn, { loading }] = useMutation(USER_LOGIN);
-
+  const [signUp, { loading }] = useMutation(USER_SIGN_UP);
 
   const submit = () => {
-    signIn({ variables: { email: user.email, password: user.password } })
+    signUp({ variables: { email: user.email, name: user.name, password: user.password } })
       .then(
         ({
           data: {
-            signIn: { user, token, error },
+            signUp: { status, error },
           },
         }) => {
-          token && setToken(token, user.email, user.role);
+          status === "success" && navigate("/signin");
           error && setErrorMessage(error);
         }
       )
@@ -96,6 +93,23 @@ const LoginForm = () => {
             errorMessages={["This field is required", "email is not valid"]}
           />
           <Stack direction="row" spacing={2} sx={{ mb: 1, alignItems: "center" }}>
+            <PersonOutlineOutlineIcon />
+            <Typography>Name</Typography>
+          </Stack>
+          <TextValidator
+            variant="outlined"
+            name="name"
+            value={user.name}
+            onChange={handleChange}
+            className={classes.textField}
+            inputProps={{
+              maxLength: 50,
+              className: classes.textInput,
+            }}
+            validators={["required"]}
+            errorMessages={["This field is required"]}
+          />
+          <Stack direction="row" spacing={2} sx={{ mb: 1, alignItems: "center" }}>
             <LockIcon />
             <Typography>Password</Typography>
           </Stack>
@@ -122,9 +136,10 @@ const LoginForm = () => {
             validators={["required"]}
             errorMessages={["This field is required"]}
           />
+
           <Box sx={{ display: "flex" }}>
-            <Link to="/signup" className={classes.link}>
-              Sign up
+            <Link to="/signin" className={classes.link}>
+              Login
             </Link>
           </Box>
 
@@ -133,7 +148,7 @@ const LoginForm = () => {
               <Preloader className={classes.preloader} />
             ) : (
               <Button variant="contained" size="large" className={classes.submit_btn} type="submit">
-                Login
+                Sign up
               </Button>
             )}
           </div>
@@ -144,4 +159,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
