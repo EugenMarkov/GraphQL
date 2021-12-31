@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { isAuthenticated } from "../cache";
+import { isAuthenticated } from "../graphql/cache";
 
 export const setToken = (token, email, role) => {
   isAuthenticated({ token: true, email, role });

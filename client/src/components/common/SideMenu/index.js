@@ -1,5 +1,5 @@
 import { useReactiveVar } from "@apollo/client";
-import { isAuthenticated } from "../../../cache";
+import { isAuthenticated } from "../../../graphql/cache";
 
 import LinkItem from "../LinkItem";
 import ArticleIcon from "@mui/icons-material/Article";

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { ApolloClient, ApolloProvider, createHttpLink } from "@apollo/client";
-import { cache } from "./cache";
+import { cache } from "./graphql/cache";
 import { ThemeProvider } from "@mui/material/styles";
 import AppRoutes from "./routes/AppRoutes";
 

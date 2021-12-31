@@ -74,7 +74,7 @@ const LoginForm = () => {
   };
 
   return (
-    <section className={`${classes.login_section} container`}>
+    <section className={`${classes.section} container`}>
       <Paper className={classes.form_wrap} elevation={0} sx={{ borderRadius: 1 }}>
         <LockOpenIcon sx={{ color: "#6875F5", fontSize: 40 }} />
         <ValidatorForm className={classes.form_content} noValidate={false} autoComplete="off" onSubmit={submit}>

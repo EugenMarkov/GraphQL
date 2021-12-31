@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useReactiveVar } from "@apollo/client";
-import { isAuthenticated } from "../cache";
+import { isAuthenticated } from "../graphql/cache";
 
 import SideMenuLayout from "../layouts/SideMenuLayout";
 import PrivateContentLayout from "../layouts/PrivateContentLayout";
@@ -9,7 +9,8 @@ import StaffMenu from "../components/common/StaffMenu";
 import PrivateContent from "../components/common/PrivateContent";
 import PrivateFilesContent from "../components/common/PrivateFilesContent";
 import UsersContent from "../components/common/UsersContent";
-import StaffContent from "../components/common/StaffContent";
+import StaffContent from "../components/StaffContent";
+import StaffTable from "../components/tables/StaffTable";
 import StaffAccount from "../components/common/StaffAccount";
 
 const RequireUser = ({ children, role }) => {
@@ -50,7 +51,7 @@ export const PrivateContentRoutes = () => {
         <Route path="files" element={<RequireAdmin role={role} children={<PrivateFilesContent />} />} />
         <Route path="users" element={<RequireAdmin role={role} children={<UsersContent />} />} />
         <Route path="staff" element={<RequireOwner role={role} children={<StaffContent />} />}>
-          <Route index element={<div>Dashboard</div>} />
+          <Route index element={<StaffTable />} />
           <Route path=":staffId" element={<StaffAccount />} />
           <Route path="new" element={<div>Add staff form</div>} />
         </Route>

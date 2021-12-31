@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(theme => ({
-  login_section: {
+  section: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",

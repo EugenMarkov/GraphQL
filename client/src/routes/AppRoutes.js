@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useReactiveVar } from "@apollo/client";
-import { isAuthenticated } from "../cache";
+import { isAuthenticated } from "../graphql/cache";
 
 import LoginPage from "../pages/LoginPage";
 import SignUpPage from "../pages/SignUpPage";

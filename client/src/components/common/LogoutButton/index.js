@@ -1,5 +1,5 @@
 import { useReactiveVar } from "@apollo/client";
-import { isAuthenticated } from "../../../cache";
+import { isAuthenticated } from "../../../graphql/cache";
 import { removeToken } from "../../../utils/auth";
 
 import Box from "@mui/material/Box";

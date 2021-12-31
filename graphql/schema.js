@@ -5,13 +5,18 @@ const typeDefs = gql`
     id: ID!
     name: String!
     email: String!
-    password: String!
     role: String!
     enabled: Boolean!
   }
 
+  input UpdatedUserInput {
+    role: String
+    enabled: Boolean
+  }
+
   type Query {
     getUsers(size: Int!, page: Int!): UsersQuery
+    getStaff(size: Int!, page: Int!, email: String!): UsersQuery
   }
 
   type UsersQuery {
@@ -24,6 +29,8 @@ const typeDefs = gql`
   type Mutation {
     signUp(name: String!, email: String!, password: String!): SignUpResponse
     signIn(email: String!, password: String!): LoginResponse
+    updateUser(id: ID!, object: UpdatedUserInput): UserUpdateResponse
+    deleteUser(id: ID!): UserDeleteResponse
     addMovie(name: String!, url: String!): MovieResponse
     updateMovie(id: ID!, startPoint: Int!): MovieResponse
     playMovie(id: ID!): MovieResponse
@@ -39,6 +46,19 @@ const typeDefs = gql`
   type LoginResponse {
     user: User
     token: String
+    error: String
+  }
+
+  type UserUpdateResponse {
+    user: User
+    status: String
+    message: String
+    error: String
+  }
+
+  type UserDeleteResponse {
+    status: String
+    message: String
     error: String
   }
 

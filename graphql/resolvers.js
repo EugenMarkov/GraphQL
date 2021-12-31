@@ -22,6 +22,24 @@ module.exports = {
         content: docs,
       };
     },
+
+    getStaff: async (_, args) => {
+      const { size, page, email } = args;
+      const filter = email ? { email: { $regex: email, $options: "i" } } : {};
+      const docs = await User.find(filter, null, {
+        skip: size * (page - 1),
+        limit: size,
+      }).exec();
+
+      const count = await User.countDocuments({}).exec();
+
+      return {
+        totalCount: count,
+        currentPage: page,
+        size: size,
+        content: docs,
+      };
+    },
   },
   Mutation: {
     signUp: async (_, args) => {
@@ -55,7 +73,7 @@ module.exports = {
           };
         }
       } catch (e) {
-        return e.message;
+        return { error: e.message };
       }
     },
     signIn: async (_, args) => {
@@ -98,7 +116,38 @@ module.exports = {
           return { error: "Password incorrect" };
         }
       } catch (e) {
-        return e.message;
+        return { error: e.message };
+      }
+    },
+    updateUser: async (_, args) => {
+      try {
+        const user = await User.findByIdAndUpdate(args.id, args.object);
+        if (!user) {
+          return { error: "User not found" };
+        }
+
+        return {
+          user,
+          message: "User successfully updated",
+          status: "success",
+        };
+      } catch (e) {
+        return { error: e.message };
+      }
+    },
+    deleteUser: async (_, args) => {
+      try {
+        const query = await User.findByIdAndRemove(args.id).exec();
+        if (!query) {
+          return { error: "User not found" };
+        }
+
+        return {
+          message: "User successfully deleted",
+          status: "success",
+        };
+      } catch (e) {
+        return { error: e.message };
       }
     },
     // addMovie: async (_, args) => {

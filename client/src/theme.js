@@ -24,8 +24,14 @@ const theme = createTheme(
     typography: {
       fontFamily: ["Roboto", "sans-serif"].join(","),
       h3: {
-        fontSize: "22 !important",
+        fontSize: "22px !important",
         lineHeight: "24px",
+        fontWeight: 700,
+        letterSpacing: "0.5px",
+      },
+      h4: {
+        fontSize: "20px !important",
+        lineHeight: "22px",
         fontWeight: 700,
         letterSpacing: "0.5px",
       },
